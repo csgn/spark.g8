@@ -10,10 +10,9 @@ private[$package$] object $entryPointName$ extends App {
     .master("local[3]")
     .getOrCreate()
 
-  import spark.implicits._
   val sc = spark.sparkContext
 
-  val waitSparkUI = () => {
+  def waitSparkUI: Unit = {
     println("Press enter in order to stop task.")
     scala.io.StdIn.readLine()
   }

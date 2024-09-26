@@ -15,16 +15,18 @@ private[$package$] object Task1 {
   def runStream(spark: SparkSession, sparkContext: SparkContext)(
       waitSparkUI: => Unit
   ) = {
+    import spark.implicits._
+
     // • Input Source  //
     val source = spark.readStream
       .format("socket")
       .option("host", "localhost")
-      .option("port", 9876)
+      .option("port", 9876) // nc -l 9876
       .load()
 
     // • Data Transformation  //
     val resultDF = source
-      .select(split("value", "\\s").as("word"))
+      .select(split($"value", "\\s").as("word"))
       .groupBy("word")
       .count()
 
@@ -36,7 +38,7 @@ private[$package$] object Task1 {
 
     // • Start Stream    //
     val streamingQuery = writer.start()
-    streamingQuery.awaitTermination(10000 /* 10s */ )
+    streamingQuery.awaitTermination(10000 /* 10sec */ )
 
     // • Tidy up    //
     streamingQuery.stop()
