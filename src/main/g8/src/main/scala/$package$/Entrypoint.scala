@@ -13,6 +13,7 @@ private[$package$] object $entryPointName$ extends App {
   val sc = spark.sparkContext
 
   def waitSparkUI: Unit = {
+    println("Serving at http://localhost:4040")
     println("Press enter in order to stop task.")
     scala.io.StdIn.readLine()
   }
