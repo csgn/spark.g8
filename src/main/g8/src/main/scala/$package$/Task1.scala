@@ -26,7 +26,7 @@ private[$package$] object Task1 {
 
     // • Data Transformation  //
     val resultDF = source
-      .select(split($"value", "\\s").as("word"))
+      .select(split(\$"value", "\\s").as("word"))
       .groupBy("word")
       .count()
 
