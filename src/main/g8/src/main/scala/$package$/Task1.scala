@@ -3,6 +3,7 @@ package $package$
 import org.apache.spark.SparkContext
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.streaming._
 
 private[$package$] object Task1 {
   def run(
@@ -15,8 +16,6 @@ private[$package$] object Task1 {
   def runStream(spark: SparkSession, sparkContext: SparkContext)(
       waitSparkUI: => Unit
   ) = {
-    import spark.implicits._
-
     // • Input Source  //
     val source = spark.readStream
       .format("socket")
@@ -26,7 +25,7 @@ private[$package$] object Task1 {
 
     // • Data Transformation  //
     val resultDF = source
-      .select(split(\$"value", "\\s").as("word"))
+      .select(split(expr("value"), "\\s").as("word"))
       .groupBy("word")
       .count()
 
