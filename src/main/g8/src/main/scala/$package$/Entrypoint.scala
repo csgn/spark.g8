@@ -13,10 +13,15 @@ private[$package$] object $entryPointName$ extends App {
   import spark.implicits._
   val sc = spark.sparkContext
 
+  val waitSparkUI = () => {
+    println("Press enter in order to stop task.")
+    scala.io.StdIn.readLine()
+  }
+
   println()
   println("============= SPARK JOB OUTPUT =============")
   println()
-  Task1.run(spark, sc)
+  Task1.run(spark, sc)(waitSparkUI)
   println()
   println("============================================")
   println()
